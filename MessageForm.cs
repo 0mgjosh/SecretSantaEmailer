@@ -79,7 +79,8 @@ namespace SecretSantaMailer
                 email_object.Subject = subject;
                 email_object.Body = new TextPart(MimeKit.Text.TextFormat.Text)
                 {
-                    Text = "Hey "+ p.Name + " You're " + p.AssignedPerson.Name + "'s Secret Santa🎅🎅🎅 \n\n\n" + custom_message
+                    Text = "Hey "+ p.Name + ". You're " + p.AssignedPerson.Name + "'s Secret Santa🎅🎅🎅 \n\n" +
+                    p.AssignedPerson.Name.ToString() + "'s address is: " + p.AssignedPerson.Address.ToString() + " \n\n\n" + custom_message
                 };
 
                 smtp.Send(email_object);

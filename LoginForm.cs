@@ -1,8 +1,8 @@
 namespace SecretSantaMailer
 {
+    using MailKit.Net.Smtp;
     using MimeKit;
     using MimeKit.Text;
-    using MailKit.Net.Smtp;
     using static Potatoes;
     public partial class LoginForm : Form
     {
@@ -13,38 +13,42 @@ namespace SecretSantaMailer
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            if (Email == null || Password == null)
+            if (true)
             {
-                this.InvalidLabel.Text = "Email, or Password field is empty.";
-                this.InvalidLabel.Visible = true;
-                return;
-            }
-            else
-            {
-                try
+                if (Email == null || Password == null)
                 {
-                    // Send Test Email
-
-                    var email = new MimeMessage();
-
-                    email.From.Add(MailboxAddress.Parse(Email));
-                    email.To.Add(MailboxAddress.Parse(Email));
-                    email.Subject = "Secret Santa Mailer";
-                    email.Body = new TextPart(TextFormat.Text) { Text = "Login Sucessful." };
-
-                    using var smtp = new SmtpClient();
-                    smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                    smtp.Authenticate(Email, Password);
-                    smtp.Send(email);
-                    smtp.Disconnect(true);
-                }
-                catch (Exception ex)
-                {
-                    //string exception = ex.ToString();
-                    this.InvalidLabel.Text = "Credentials Invalid, \n \n Use Gmails 3rd Party App Password";
+                    this.InvalidLabel.Text = "Email, or Password field is empty.";
                     this.InvalidLabel.Visible = true;
                     return;
                 }
+                else
+                {
+                    try
+                    {
+                        // Send Test Email
+
+                        var email = new MimeMessage();
+
+                        email.From.Add(MailboxAddress.Parse(Email));
+                        email.To.Add(MailboxAddress.Parse(Email));
+                        email.Subject = "Secret Santa Mailer";
+                        email.Body = new TextPart(TextFormat.Text) { Text = "Login Sucessful." };
+
+                        using var smtp = new SmtpClient();
+                        smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                        smtp.Authenticate(Email, Password);
+                        smtp.Send(email);
+                        smtp.Disconnect(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        //string exception = ex.ToString();
+                        this.InvalidLabel.Text = "Credentials Invalid, \n \n Use Gmails 3rd Party App Password";
+                        this.InvalidLabel.Visible = true;
+                        return;
+                    }
+                }
+
             }
 
             ActiveForm.Visible = false;

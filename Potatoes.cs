@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-
-namespace SecretSantaMailer
+﻿namespace SecretSantaMailer
 {
     static class Potatoes
     {
+        public static Plist PersonList = new Plist();
+
         public static string? Email;
         public static string? Password;
 

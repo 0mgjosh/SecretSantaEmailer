@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SecretSantaMailer
+﻿namespace SecretSantaMailer
 {
     public class Person
     {
-        public static List<Person> Members = new List<Person>();
-        public static List<Person> Members_Remaining = new List<Person>();
-
         public string Name { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
@@ -21,6 +12,18 @@ namespace SecretSantaMailer
             Name = name;
             Email = email;
             Address = address;
+        }
+
+    }
+    public class Plist
+    {
+        public string Name { get; set; }
+        public List<Person> Members { get; set; } = new List<Person>();
+        public Plist() { }
+        public Plist(Plist plist)
+        {
+            Name = plist.Name;
+            Members = plist.Members;
         }
     }
 }

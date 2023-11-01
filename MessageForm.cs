@@ -11,14 +11,15 @@ namespace SecretSantaMailer
 
         private Random rand = new();
 
+        List<Person> remaining = new();
 
         public MessageForm()
         {
             InitializeComponent();
 
-            foreach(Person p in Person.Members)
+            foreach (Person p in Potatoes.PersonList.Members)
             {
-                Person.Members_Remaining.Add(p);
+                remaining.Add(p);
             }
 
             subject = SubjectTextBox.Text;
@@ -36,41 +37,41 @@ namespace SecretSantaMailer
 
         private bool AssignMembers()
         {
-            for (int i = 0; i < Person.Members.Count; i++)
+            for (int i = 0; i < Potatoes.PersonList.Members.Count; i++)
             {
-                AssignMembers:
+            AssignMembers:
 
-                int random_index = rand.Next(0, Person.Members_Remaining.Count());
+                int random_index = rand.Next(0, remaining.Count());
 
-                if (Person.Members[i] == Person.Members_Remaining[random_index]) goto AssignMembers;
+                if (Potatoes.PersonList.Members[i] == remaining[random_index]) goto AssignMembers;
 
-                Person.Members[i].AssignedPerson = Person.Members_Remaining[random_index];
+                Potatoes.PersonList.Members[i].AssignedPerson = remaining[random_index];
 
-                Person.Members_Remaining.RemoveAt(random_index);
+                remaining.RemoveAt(random_index);
             }
 
 
             return true;
         }
-        
-        
+
+
         private void SendEmailButton_Click(object sender, EventArgs e)
         {
             AssignMembers();
 
             using var smtp = new SmtpClient();
-            
+
             try
             {
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
                 smtp.Authenticate(Email, Password);
-            } 
+            }
             catch
             {
                 WarningLabel.Visible = true;
             }
 
-            foreach(Person p in Person.Members)
+            foreach (Person p in Potatoes.PersonList.Members)
             {
                 var email_object = new MimeMessage();
 
@@ -79,7 +80,7 @@ namespace SecretSantaMailer
                 email_object.Subject = subject;
                 email_object.Body = new TextPart(MimeKit.Text.TextFormat.Text)
                 {
-                    Text = "Hey "+ p.Name + ". You're " + p.AssignedPerson.Name + "'s Secret Santa🎅🎅🎅 \n\n" +
+                    Text = "Hey " + p.Name + ". You're " + p.AssignedPerson.Name + "'s Secret Santa🎅🎅🎅 \n\n" +
                     p.AssignedPerson.Name.ToString() + "'s address is: " + p.AssignedPerson.Address.ToString() + " \n\n\n" + custom_message
                 };
 
